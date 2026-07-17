@@ -25,6 +25,8 @@ export const colors = {
   incomeBackground: '#ECFDF5',   // Emerald 50 (Clean background highlight for income items)
   expense: '#DC2626',           // Red 600 (Subtle, professional red for Expenses)
   expenseBackground: '#FEF2F2',  // Red 50 (Clean background highlight for expense items)
+  savings: '#2563EB',           // Violet 600 (Elegant violet for savings)
+  savingsBackground: '#F5F3FF', // Violet 50 (Clean background highlight for savings)
   
   // Utility/Neutral Alert Colors
   warning: '#D97706',           // Amber 600

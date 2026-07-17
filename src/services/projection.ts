@@ -91,7 +91,7 @@ export function calculateFinancialProjection(
       }
 
       if (isActive) {
-        if (tx.type === 'income') {
+        if (tx.type === 'income' || tx.type === 'withdraw') {
           estimatedIncomes += tx.amount;
         } else {
           estimatedExpenses += tx.amount;

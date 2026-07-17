@@ -48,6 +48,7 @@ export default function TransactionForm({ onSubmit, onCancel, initialData }: Tra
 
   const [errors, setErrors] = useState<{ name?: string; amount?: string; installmentsCount?: string }>({});
   const [isAttachmentModalOpen, setIsAttachmentModalOpen] = useState(false);
+  const [startMonthOption, setStartMonthOption] = useState<'current' | 'next'>('current');
 
   // helper: does current attachment look like an image?
   const isImageAttachment = attachmentUri
@@ -124,6 +125,16 @@ export default function TransactionForm({ onSubmit, onCancel, initialData }: Tra
     if (!validate()) return;
 
     const parsedAmount = parseFloat(amount.replace(',', '.'));
+    
+    let finalDate = initialData?.date;
+    if (!finalDate) {
+      const baseDate = new Date();
+      if (recurrenceType === 'installment' && startMonthOption === 'next') {
+        baseDate.setMonth(baseDate.getMonth() + 1);
+      }
+      finalDate = baseDate.toISOString().split('T')[0];
+    }
+
     const submitData = {
       name: name.trim(),
       amount: parsedAmount,
@@ -132,7 +143,7 @@ export default function TransactionForm({ onSubmit, onCancel, initialData }: Tra
       recurrenceType,
       installmentsCount: recurrenceType === 'installment' ? parseInt(installmentsCount, 10) : undefined,
       id: initialData?.id,
-      date: initialData?.date,
+      date: finalDate,
       attachmentUri,
     };
 
@@ -145,6 +156,7 @@ export default function TransactionForm({ onSubmit, onCancel, initialData }: Tra
     setCategory('Outros');
     setRecurrenceType('single');
     setInstallmentsCount('2');
+    setStartMonthOption('current');
     setAttachmentUri(undefined);
     setErrors({});
   };
@@ -154,12 +166,13 @@ export default function TransactionForm({ onSubmit, onCancel, initialData }: Tra
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.keyboardContainer}
     >
-      <ScrollView 
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={styles.formCard}>
+      <View style={styles.formContainer}>
+        <ScrollView 
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.formCard}>
           <Text style={styles.formTitle}>
             {initialData ? 'Editar Transação' : 'Nova Transação'}
           </Text>
@@ -200,43 +213,61 @@ export default function TransactionForm({ onSubmit, onCancel, initialData }: Tra
             {errors.amount && <Text style={styles.errorText}>{errors.amount}</Text>}
           </View>
 
-          {/* Tipo (Receita / Despesa) */}
+          {/* Tipo (Receita / Despesa / Guardar / Resgatar) */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Tipo de Transação</Text>
-            <View style={styles.segmentedControl}>
+            <View style={styles.typeRow}>
               <TouchableOpacity
                 style={[
-                  styles.segmentButton,
-                  type === 'income' && styles.segmentButtonIncomeActive,
+                  styles.typeGridButton,
+                  type === 'income' && styles.typeButtonIncomeActive,
                 ]}
                 activeOpacity={0.8}
                 onPress={() => setType('income')}
               >
-                <Text
-                  style={[
-                    styles.segmentText,
-                    type === 'income' && styles.segmentTextActive,
-                  ]}
-                >
-                  Receita
+                <Text style={[styles.typeButtonText, type === 'income' && styles.typeButtonTextActive]}>
+                  📥 Receita
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={[
-                  styles.segmentButton,
-                  type === 'expense' && styles.segmentButtonExpenseActive,
+                  styles.typeGridButton,
+                  type === 'expense' && styles.typeButtonExpenseActive,
                 ]}
                 activeOpacity={0.8}
                 onPress={() => setType('expense')}
               >
-                <Text
-                  style={[
-                    styles.segmentText,
-                    type === 'expense' && styles.segmentTextActive,
-                  ]}
-                >
-                  Despesa
+                <Text style={[styles.typeButtonText, type === 'expense' && styles.typeButtonTextActive]}>
+                  📤 Despesa
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.typeRow}>
+              <TouchableOpacity
+                style={[
+                  styles.typeGridButton,
+                  type === 'saving' && styles.typeButtonSavingActive,
+                ]}
+                activeOpacity={0.8}
+                onPress={() => setType('saving')}
+              >
+                <Text style={[styles.typeButtonText, type === 'saving' && styles.typeButtonTextActive]}>
+                  💰 Guardar
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.typeGridButton,
+                  type === 'withdraw' && styles.typeButtonWithdrawActive,
+                ]}
+                activeOpacity={0.8}
+                onPress={() => setType('withdraw')}
+              >
+                <Text style={[styles.typeButtonText, type === 'withdraw' && styles.typeButtonTextActive]}>
+                  🔄 Resgatar
                 </Text>
               </TouchableOpacity>
             </View>
@@ -359,6 +390,50 @@ export default function TransactionForm({ onSubmit, onCancel, initialData }: Tra
             </View>
           )}
 
+          {/* Mês de Início das Parcelas (Exibido Condicionalmente) */}
+          {recurrenceType === 'installment' && (
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Mês de Início das Parcelas</Text>
+              <View style={styles.segmentedControl}>
+                <TouchableOpacity
+                  style={[
+                    styles.segmentButton,
+                    startMonthOption === 'current' && styles.segmentButtonActive,
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setStartMonthOption('current')}
+                >
+                  <Text
+                    style={[
+                      styles.segmentText,
+                      startMonthOption === 'current' && styles.segmentTextActive,
+                    ]}
+                  >
+                    Mês Atual
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.segmentButton,
+                    startMonthOption === 'next' && styles.segmentButtonActive,
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setStartMonthOption('next')}
+                >
+                  <Text
+                    style={[
+                      styles.segmentText,
+                      startMonthOption === 'next' && styles.segmentTextActive,
+                    ]}
+                  >
+                    Próximo Mês
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+
           {/* Anexo / Comprovante */}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Anexo (opcional)</Text>
@@ -408,30 +483,32 @@ export default function TransactionForm({ onSubmit, onCancel, initialData }: Tra
             )}
           </View>
 
-          {/* Botões de Ação */}
-          <View style={styles.buttonRow}>
-            {onCancel && (
-              <TouchableOpacity
-                style={styles.cancelButton}
-                activeOpacity={0.7}
-                onPress={onCancel}
-              >
-                <Text style={styles.cancelButtonText}>Cancelar</Text>
-              </TouchableOpacity>
-            )}
-
-            <TouchableOpacity
-              style={styles.saveButton}
-              activeOpacity={0.8}
-              onPress={handleSave}
-            >
-              <Text style={styles.saveButtonText}>
-                {initialData ? 'Salvar Alterações' : 'Salvar Transação'}
-              </Text>
-            </TouchableOpacity>
           </View>
+        </ScrollView>
+
+        {/* Botões de Ação Fixos */}
+        <View style={styles.fixedFooter}>
+          {onCancel && (
+            <TouchableOpacity
+              style={styles.cancelButton}
+              activeOpacity={0.7}
+              onPress={onCancel}
+            >
+              <Text style={styles.cancelButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+          )}
+
+          <TouchableOpacity
+            style={styles.saveButton}
+            activeOpacity={0.8}
+            onPress={handleSave}
+          >
+            <Text style={styles.saveButtonText}>
+              {initialData ? 'Salvar Alterações' : 'Salvar Transação'}
+            </Text>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
+      </View>
 
       {/* Modal Personalizado de Seleção de Anexo */}
       <Modal
@@ -842,5 +919,64 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.sizes.sm,
     fontWeight: theme.typography.weights.bold,
     color: theme.colors.textSecondary,
+  },
+  // Type selection grid (2x2)
+  typeGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.spacing.sm,
+  },
+  typeGridButton: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    borderRadius: theme.borderRadius.md,
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  typeButtonText: {
+    fontSize: theme.typography.sizes.sm,
+    fontWeight: theme.typography.weights.semibold,
+    color: theme.colors.textSecondary,
+  },
+  typeButtonTextActive: {
+    color: theme.colors.surface,
+  },
+  typeButtonIncomeActive: {
+    backgroundColor: theme.colors.income,
+    borderColor: theme.colors.income,
+  },
+  typeButtonExpenseActive: {
+    backgroundColor: theme.colors.expense,
+    borderColor: theme.colors.expense,
+  },
+  typeButtonSavingActive: {
+    backgroundColor: theme.colors.savings,
+    borderColor: theme.colors.savings,
+  },
+  typeButtonWithdrawActive: {
+    backgroundColor: theme.colors.savings,
+    borderColor: theme.colors.savings,
+  },
+  // Type grid rows
+  typeRow: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+    marginBottom: theme.spacing.sm,
+  },
+  formContainer: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+  fixedFooter: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: theme.spacing.md,
+    padding: theme.spacing.lg,
+    borderTopWidth: 1,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.surface,
   },
 });

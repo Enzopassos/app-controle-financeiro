@@ -136,10 +136,50 @@ export default function App() {
   const currentYear = new Date().getFullYear();
   const projectionYears = [currentYear, currentYear + 1, currentYear + 2];
 
+  // Calculate cumulative total savings up to a specific date
+  const calculateCumulativeSavings = (upToDate: Date) => {
+    let totalSavings = 0;
+    const limitYear = upToDate.getFullYear();
+    const limitMonth = upToDate.getMonth();
+    const limitOffset = limitYear * 12 + limitMonth;
+
+    transactions.forEach((tx) => {
+      const parts = tx.date.split('-');
+      if (parts.length < 2) return;
+      const txYear = parseInt(parts[0], 10);
+      const txMonth = parseInt(parts[1], 10) - 1;
+      const txOffset = txYear * 12 + txMonth;
+
+      if (txOffset > limitOffset) return;
+
+      let occurrences = 0;
+      if (tx.recurrenceType === 'single') {
+        occurrences = txOffset <= limitOffset ? 1 : 0;
+      } else if (tx.recurrenceType === 'fixed') {
+        occurrences = Math.max(0, limitOffset - txOffset + 1);
+      } else if (tx.recurrenceType === 'installment') {
+        const count = tx.installmentsCount || 1;
+        const endOffset = txOffset + count - 1;
+        const activeEnd = Math.min(limitOffset, endOffset);
+        occurrences = Math.max(0, activeEnd - txOffset + 1);
+      }
+
+      if (tx.type === 'saving') {
+        totalSavings += tx.amount * occurrences;
+      } else if (tx.type === 'withdraw') {
+        totalSavings -= tx.amount * occurrences;
+      }
+    });
+
+    return totalSavings;
+  };
+
   // Calculate selected month financial summary
   const selectedMonthSummary = () => {
     let income = 0;
     let expense = 0;
+    let monthlySavings = 0;
+    let monthlyWithdraws = 0;
     const targetYear = selectedDate.getFullYear();
     const targetMonth = selectedDate.getMonth();
     const targetOffset = targetYear * 12 + targetMonth;
@@ -163,19 +203,27 @@ export default function App() {
       }
 
       if (isActive) {
-        if (tx.type === 'income') income += tx.amount;
-        else expense += tx.amount;
+        if (tx.type === 'income') {
+          income += tx.amount;
+        } else if (tx.type === 'expense') {
+          expense += tx.amount;
+        } else if (tx.type === 'saving') {
+          monthlySavings += tx.amount;
+        } else if (tx.type === 'withdraw') {
+          monthlyWithdraws += tx.amount;
+        }
       }
     });
 
     return {
       income,
       expense,
-      balance: income - expense,
+      balance: income + monthlyWithdraws - expense - monthlySavings,
     };
   };
 
   const { income, expense, balance } = selectedMonthSummary();
+  const savingsBalance = calculateCumulativeSavings(selectedDate);
 
   // Get active transactions for selected month
   const getFilteredTransactions = () => {
@@ -250,15 +298,30 @@ export default function App() {
   };
 
   const renderTransactionItem = ({ item }: { item: Transaction }) => {
-    const isIncome = item.type === 'income';
     const installmentText = getInstallmentText(item);
+    const sign = (item.type === 'income' || item.type === 'withdraw') ? '+' : '-';
+    
+    let amountStyle = styles.amountExpense;
+    if (item.type === 'income') {
+      amountStyle = styles.amountIncome;
+    } else if (item.type === 'saving' || item.type === 'withdraw') {
+      amountStyle = styles.amountSavings;
+    }
+
+    const typeLabel = item.type === 'income'
+      ? 'Receita'
+      : item.type === 'expense'
+      ? 'Despesa'
+      : item.type === 'saving'
+      ? 'Guardado'
+      : 'Resgatado';
 
     return (
       <View style={styles.transactionCard}>
         <View style={styles.transactionInfo}>
           <Text style={styles.transactionName}>{item.name}</Text>
           <Text style={styles.transactionMeta}>
-            {item.category} • {item.recurrenceType === 'single' ? 'Única' : item.recurrenceType === 'fixed' ? 'Fixa' : installmentText}
+            {typeLabel} • {item.category} • {item.recurrenceType === 'single' ? 'Única' : item.recurrenceType === 'fixed' ? 'Fixa' : installmentText}
           </Text>
           <Text style={styles.transactionDate}>Início: {item.date}</Text>
           {item.attachmentUri && (
@@ -273,8 +336,8 @@ export default function App() {
           )}
         </View>
         <View style={styles.transactionAction}>
-          <Text style={[styles.transactionAmount, isIncome ? styles.amountIncome : styles.amountExpense]}>
-            {isIncome ? '+' : '-'} R$ {item.amount.toFixed(2)}
+          <Text style={[styles.transactionAmount, amountStyle]}>
+            {sign} R$ {item.amount.toFixed(2)}
           </Text>
           <View style={styles.actionButtonsRow}>
             <TouchableOpacity onPress={() => handleEditTransaction(item)} style={styles.editButton}>
@@ -345,6 +408,12 @@ export default function App() {
               <Text style={styles.summaryValueExpense}>R$ {expense.toFixed(2)}</Text>
             </View>
           </View>
+          <View style={styles.summaryRow}>
+            <View style={styles.summaryCol}>
+              <Text style={styles.summaryLabel}>Dinheiro Guardado (Total)</Text>
+              <Text style={styles.summaryValueSavings}>R$ {savingsBalance.toFixed(2)}</Text>
+            </View>
+          </View>
         </View>
       )}
 
@@ -388,7 +457,7 @@ export default function App() {
       ) : (
         <ScrollView style={styles.listContainer} contentContainerStyle={styles.listContent}>
           <View style={styles.projectionTitleRow}>
-            <Text style={styles.sectionTitle}>Projeção de Proventos</Text>
+            <Text style={styles.sectionTitle}>Projeção de Renda</Text>
             
             {/* Year Selector for Projections */}
             <View style={styles.yearSelectorContainer}>
@@ -432,11 +501,11 @@ export default function App() {
               </View>
               
               <View style={styles.projectionRow}>
-                <Text style={styles.projectionLabel}>Incomes Previstos:</Text>
+                <Text style={styles.projectionLabel}>Renda Prevista:</Text>
                 <Text style={styles.projectionValueIncome}>+R$ {proj.estimatedIncomes.toFixed(2)}</Text>
               </View>
               <View style={styles.projectionRow}>
-                <Text style={styles.projectionLabel}>Expenses Previstas:</Text>
+                <Text style={styles.projectionLabel}>Despesas Previstas:</Text>
                 <Text style={styles.projectionValueExpense}>-R$ {proj.estimatedExpenses.toFixed(2)}</Text>
               </View>
               <View style={styles.projectionDivider} />
@@ -455,7 +524,23 @@ export default function App() {
                     <Text style={styles.emptyDetailsText}>Nenhuma receita ou despesa prevista para este mês.</Text>
                   ) : (
                     proj.details.map((detail, idx) => {
-                      const isIncome = detail.transaction.type === 'income';
+                      const sign = (detail.transaction.type === 'income' || detail.transaction.type === 'withdraw') ? '+' : '-';
+                      
+                      let amountStyle = styles.amountExpense;
+                      if (detail.transaction.type === 'income') {
+                        amountStyle = styles.amountIncome;
+                      } else if (detail.transaction.type === 'saving' || detail.transaction.type === 'withdraw') {
+                        amountStyle = styles.amountSavings;
+                      }
+
+                      const typeLabel = detail.transaction.type === 'income'
+                        ? 'Receita'
+                        : detail.transaction.type === 'expense'
+                        ? 'Despesa'
+                        : detail.transaction.type === 'saving'
+                        ? 'Guardado'
+                        : 'Resgatado';
+
                       const recurrenceText = detail.transaction.recurrenceType === 'fixed'
                         ? 'Fixa'
                         : detail.transaction.recurrenceType === 'single'
@@ -466,10 +551,10 @@ export default function App() {
                         <View key={`${detail.transaction.id}-${idx}`} style={styles.detailItem}>
                           <View style={styles.detailTextContainer}>
                             <Text style={styles.detailName}>{detail.transaction.name}</Text>
-                            <Text style={styles.detailMeta}>{detail.transaction.category} • {recurrenceText}</Text>
+                            <Text style={styles.detailMeta}>{typeLabel} • {detail.transaction.category} • {recurrenceText}</Text>
                           </View>
-                          <Text style={[styles.detailAmount, isIncome ? styles.amountIncome : styles.amountExpense]}>
-                            {isIncome ? '+' : '-'} R$ {detail.transaction.amount.toFixed(2)}
+                          <Text style={[styles.detailAmount, amountStyle]}>
+                            {sign} R$ {detail.transaction.amount.toFixed(2)}
                           </Text>
                         </View>
                       );
@@ -778,6 +863,11 @@ const styles = StyleSheet.create({
     fontWeight: theme.typography.weights.bold,
     color: theme.colors.expense,
   },
+  summaryValueSavings: {
+    fontSize: theme.typography.sizes.md,
+    fontWeight: theme.typography.weights.bold,
+    color: theme.colors.savings,
+  },
   tabContainer: {
     flexDirection: 'row',
     marginHorizontal: theme.spacing.lg,
@@ -866,6 +956,9 @@ const styles = StyleSheet.create({
   },
   amountExpense: {
     color: theme.colors.expense,
+  },
+  amountSavings: {
+    color: theme.colors.savings,
   },
   actionButtonsRow: {
     flexDirection: 'row',

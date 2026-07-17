@@ -1,4 +1,4 @@
-export type TransactionType = 'income' | 'expense'; // Receita ou Despesa
+export type TransactionType = 'income' | 'expense' | 'saving' | 'withdraw'; // Receita, Despesa, Guardar ou Resgatar
 
 export type RecurrenceType = 'single' | 'fixed' | 'installment';
 
