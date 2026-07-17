@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "App Financeiro",
+    "slug": "app-financeiro",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F8FAFC"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.enzopassos.appfinanceiro"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#F8FAFC"
+      },
+      "package": "com.enzopassos.appfinanceiro"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "owner": "enzopassos",
+    "extra": {
+      "eas": {
+        "projectId": "6ffe60b7-f623-4a4a-a8ed-cdf068e7f54e"
+      }
+    }
+  }
+}
