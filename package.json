@@ -1,0 +1,14 @@
+{
+  "name": "app-controle-financeiro",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "app",
+    "web"
+  ],
+  "scripts": {
+    "web:dev": "npm run dev --workspace=web",
+    "web:build": "npm run build --workspace=web",
+    "app:start": "npm start --workspace=app"
+  }
+}
