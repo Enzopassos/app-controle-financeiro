@@ -1,91 +1,110 @@
-# App Financeiro 📊
+# App de Controle Financeiro & Projeção 📊
 
-Um aplicativo mobile moderno para controle de finanças pessoais e projeção financeira simplificada, desenvolvido em **React Native** com **Expo** e **TypeScript**.
-
-O foco deste aplicativo é permitir que você gerencie suas receitas e despesas cotidianas, visualizando a evolução do seu saldo atual e projetando sua saúde financeira para até 2 anos à frente com dados previsíveis (gastos fixos e parcelados).
+Monorepo contendo a aplicação **Mobile** (React Native / Expo) e a nova versão **Web** (React + Vite + TypeScript) para controle de finanças pessoais e projeção financeira futura.
 
 ---
 
-## 🚀 Funcionalidades Principais
-
-*   **Controle de Transações**:
-    *   Criação de receitas (`income`) e despesas (`expense`) divididas por categorias.
-    *   Suporte a recorrências: **Única** (avulsa), **Fixa** (mensal) ou **Parcelada**.
-    *   Edição de transações existentes (mantendo o histórico e dados originais) ou exclusão.
-*   **Anexos em Transações (Fotos e PDFs) 📎**:
-    *   Upload de anexos durante a criação ou edição de transações.
-    *   **Bottom Sheet personalizado** para escolha entre selecionar foto da galeria ou documento PDF.
-    *   Visualizador nativo de imagem em tela cheia para fotos.
-    *   Suporte para **abrir e compartilhar arquivos PDF** diretamente em leitores externos do sistema operacional.
-*   **Histórico de Navegação Mensal**:
-    *   Navegação intuitiva de meses através de botões rápidos `◀` e `▶`.
-    *   **Seletor de Calendário Personalizado**: Escolha direta de qualquer mês/ano com dois cliques.
-    *   Botão "Mês Atual" para retornar rapidamente ao período corrente.
-*   **Projeção Anual & Multi-Anual**:
-    *   Cálculo automático de estimativa de saldo, receitas e despesas mês a mês.
-    *   Visualização estendida para o ano corrente, **+1 ano** ou **+2 anos** subsequentes.
-    *   **Design Colapsado**: Cards mensais de projeção que podem ser expandidos para listar exatamente quais transações (e parcelas específicas) estão ativas naquele mês.
-    *   Cálculo inteligente de parcelas vigentes (ex: exibe `Parcela 2/6` no mês correspondente).
-
----
-
-## 🛠️ Stack Tecnológica
-
-*   **Core**: React Native (Expo SDK 51)
-*   **Linguagem**: TypeScript
-*   **Armazenamento**: AsyncStorage (para persistência de dados offline local no dispositivo)
-*   **Seletores de Arquivos**: `expo-image-picker` e `expo-document-picker`
-*   **Integração com o Sistema**: `expo-sharing` (para visualização externa de documentos)
-
----
-
-## 📂 Estrutura do Projeto
+## 📂 Estrutura do Repositório
 
 ```text
-├── App.tsx                    # Ponto de entrada e gerenciamento de estado principal
-├── app.json                   # Configurações do Expo
-├── package.json               # Dependências do projeto
-├── src
-│   ├── components
-│   │   └── TransactionForm.tsx # Formulário customizado para criar/editar transações e anexos
-│   ├── database
-│   │   └── repository.ts       # Repositório de persistência usando AsyncStorage
-│   ├── services
-│   │   └── projection.ts       # Lógica matemática de projeções e parcelamentos
-│   ├── theme
-│   │   └── colors.ts           # Paleta de cores, tipografia e estilos globais (Aesthetics)
-│   └── types
-│       └── transaction.ts      # Interfaces e definições de tipo TypeScript
-└── tsconfig.json              # Configurações do compilador TypeScript
+.
+├── app/                        # Aplicativo Mobile (React Native / Expo)
+│   ├── App.tsx                 # Entrada e telas do aplicativo mobile
+│   ├── assets/                 # Imagens e recursos visuais
+│   ├── src/                    # Componentes, repositório e serviços mobile
+│   └── package.json            # Dependências da versão Mobile
+│
+├── web/                        # Aplicação Web (React + Vite + TypeScript)
+│   ├── index.html              # HTML5 Semântico com SEO
+│   ├── src/
+│   │   ├── components/         # Componentes Web (Cabecalho, SeletorMes, CardResumo, etc.)
+│   │   ├── database/           # Persistência via LocalStorage (repositorioTransacoes.ts)
+│   │   ├── services/           # Regra de negócio e projeção matemática (servicoProjecao.ts)
+│   │   ├── types/              # Tipos TypeScript em Português (transacao.ts)
+│   │   ├── App.tsx             # Aplicação Web principal
+│   │   └── index.css           # Design System Vanilla CSS (Estética premium)
+│   └── package.json            # Dependências da versão Web
+│
+└── README.md                   # Documentação do projeto
 ```
 
 ---
 
-## ⚙️ Instalação e Execução
+## 🚀 Como Executar
 
 ### Pré-requisitos
-Certifique-se de ter o **Node.js** e o gerenciador de pacotes **npm** instalados.
-
-1.  **Instale as dependências do projeto**:
-    ```bash
-    npm install
-    ```
-
-2.  **Execute o servidor de desenvolvimento do Expo**:
-    ```bash
-    npx expo start
-    ```
-
-3.  **Abra o aplicativo**:
-    *   Pressione `a` para abrir no emulador Android.
-    *   Pressione `i` para abrir no simulador iOS (necessário macOS).
-    *   Escaneie o código QR exibido no terminal utilizando o aplicativo **Expo Go** em seu dispositivo móvel (Android ou iOS).
+Certifique-se de ter o **Node.js** (v18+) e o **npm** instalados em sua máquina.
 
 ---
 
-## 🧪 Verificação de Tipagem TypeScript
+### 🌐 1. Executar a Aplicação Web (`web/`)
 
-Para rodar a checagem estática de tipos no projeto e garantir integridade de código:
-```bash
-npx tsc --noEmit
-```
+1. Navegue até a pasta da aplicação Web:
+   ```bash
+   cd web
+   ```
+
+2. Instale as dependências (caso ainda não tenha instalado):
+   ```bash
+   npm install
+   ```
+
+3. Inicie o servidor de desenvolvimento Vite:
+   ```bash
+   npm run dev
+   ```
+   *Acesse a aplicação no navegador em: `http://localhost:5173`*
+
+4. Para gerar o build final de produção da Web:
+   ```bash
+   npm run build
+   ```
+
+---
+
+### ☁️ 3. Deploy no Vercel (`web/`)
+
+O repositório já conta com o arquivo de configuração `vercel.json` na raiz pronto para deploy automático da pasta `web/`:
+
+1. Conecte o repositório GitHub à sua conta do [Vercel](https://vercel.com).
+2. O Vercel detectará automaticamente as configurações de build a partir do `vercel.json` (`cd web && npm run build` e pasta de saída `web/dist`).
+3. Clique em **Deploy**!
+
+
+---
+
+### 📱 2. Executar o Aplicativo Mobile (`app/`)
+
+1. Navegue até a pasta do aplicativo Mobile:
+   ```bash
+   cd app
+   ```
+
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+
+3. Inicie o servidor do Expo:
+   ```bash
+   npx expo start
+   ```
+
+4. Para abrir o app:
+   * Pressione `a` para abrir no emulador Android.
+   * Pressione `i` para abrir no simulador iOS (necessita macOS).
+   * Escaneie o código QR com o app **Expo Go** no celular.
+
+---
+
+## 🧪 Verificação de Tipos TypeScript
+
+- **Web**:
+  ```bash
+  cd web && npx tsc --noEmit
+  ```
+
+- **Mobile**:
+  ```bash
+  cd app && npm run ts:check
+  ```

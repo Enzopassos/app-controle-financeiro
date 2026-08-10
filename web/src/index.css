@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Cores Principais */
+  --bg-principal: #F8FAFC;
+  --bg-superficie: #FFFFFF;
+  --bg-card-hover: #F1F5F9;
+  
+  --cor-primaria: #2563EB;
+  --cor-primaria-hover: #1D4ED8;
+  --cor-primaria-suave: #EFF6FF;
+  --cor-borda: #E2E8F0;
+  
+  /* Cores de Tipografia */
+  --texto-principal: #0F172A;
+  --texto-secundario: #64748B;
+  --texto-suave: #94A3B8;
+  
+  /* Cores Financeiras */
+  --cor-receita: #059669;
+  --bg-receita: #ECFDF5;
+  --cor-despesa: #DC2626;
+  --bg-despesa: #FEF2F2;
+  --cor-guardado: #7C3AED;
+  --bg-guardado: #F5F3FF;
+  --cor-resgatado: #D97706;
+  --bg-resgatado: #FFFBEB;
+
+  /* Sombras e Bordas */
+  --sombra-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+  --sombra-modal: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  --transicao-suave: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-principal);
+  color: var(--texto-principal);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: var(--transicao-suave);
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+/* Layout Principal */
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem 1.25rem;
+}
+
+.conteudo-dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .conteudo-dashboard-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 1.75rem;
+    align-items: start;
+  }
+
+  .coluna-painel-lateral {
+    position: sticky;
+    top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .coluna-painel-lateral .resumo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUpModal {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animar-fade {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-conteudo {
+  background-color: var(--bg-superficie);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--sombra-modal);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.75rem;
+  animation: slideUpModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Utilitários de Estilo */
+.badge-anexo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  background-color: var(--cor-primaria-suave);
+  color: var(--cor-primaria);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+.badge-anexo:hover {
+  background-color: #DBEAFE;
+}
+
+.valor-positivo {
+  color: var(--cor-receita);
+}
+
+.valor-negativo {
+  color: var(--cor-despesa);
+}
+
+.valor-economias {
+  color: var(--cor-guardado);
+}

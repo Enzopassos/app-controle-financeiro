@@ -1,0 +1,328 @@
+.modal-formulario {
+  max-width: 540px;
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.form-titulo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--texto-principal);
+}
+
+.btn-fechar-modal {
+  color: var(--texto-secundario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: var(--radius-md);
+}
+
+.btn-fechar-modal:hover {
+  background-color: var(--bg-principal);
+  color: var(--texto-principal);
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.grupo-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label-input {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--texto-principal);
+}
+
+.input-texto {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--cor-borda);
+  background-color: var(--bg-principal);
+  font-size: 0.9rem;
+  color: var(--texto-principal);
+  outline: none;
+  transition: var(--transicao-suave);
+}
+
+.input-texto:focus {
+  border-color: var(--cor-primaria);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.input-com-erro {
+  border-color: var(--cor-despesa);
+}
+
+.mensagem-erro {
+  font-size: 0.75rem;
+  color: var(--cor-despesa);
+  font-weight: 500;
+}
+
+.input-moeda-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.prefixo-moeda {
+  position: absolute;
+  left: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+}
+
+.input-moeda {
+  padding-left: 2.75rem;
+  font-weight: 600;
+}
+
+.grid-tipos-transacao {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.btn-opcao-tipo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--cor-borda);
+  background-color: var(--bg-principal);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+}
+
+.btn-opcao-tipo:hover {
+  background-color: var(--bg-card-hover);
+}
+
+.tipo-income-ativo {
+  background-color: var(--bg-receita);
+  border-color: #A7F3D0;
+  color: var(--cor-receita);
+}
+
+.tipo-expense-ativo {
+  background-color: var(--bg-despesa);
+  border-color: #FCA5A5;
+  color: var(--cor-despesa);
+}
+
+.tipo-saving-ativo {
+  background-color: var(--bg-guardado);
+  border-color: #DDD6FE;
+  color: var(--cor-guardado);
+}
+
+.tipo-withdraw-ativo {
+  background-color: var(--bg-resgatado);
+  border-color: #FDE68A;
+  color: var(--cor-resgatado);
+}
+
+.flex-categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.btn-categoria-item {
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid var(--cor-borda);
+  background-color: var(--bg-principal);
+  color: var(--texto-secundario);
+}
+
+.btn-categoria-item:hover {
+  background-color: var(--cor-borda);
+}
+
+.btn-categoria-ativo {
+  background-color: var(--cor-primaria-suave);
+  border-color: #BFDBFE;
+  color: var(--cor-primaria);
+  font-weight: 600;
+}
+
+.grid-recorrencias {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.btn-recorrencia {
+  padding: 0.6rem 0.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--cor-borda);
+  background-color: var(--bg-principal);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+  text-align: center;
+}
+
+.btn-recorrencia:hover {
+  background-color: var(--cor-borda);
+}
+
+.btn-recorrencia-ativo {
+  background-color: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+  color: #FFFFFF;
+}
+
+.caixa-parcelamento {
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-principal);
+  border: 1px solid var(--cor-borda);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.flex-mes-inicio {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-mes-inicio {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--cor-borda);
+  background-color: var(--bg-superficie);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.btn-mes-inicio-ativo {
+  background-color: var(--cor-primaria-suave);
+  border-color: var(--cor-primaria);
+  color: var(--cor-primaria);
+  font-weight: 600;
+}
+
+.area-upload-arquivo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border: 2px dashed var(--cor-borda);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-principal);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--texto-secundario);
+  transition: var(--transicao-suave);
+}
+
+.area-upload-arquivo:hover {
+  border-color: var(--cor-primaria);
+  color: var(--cor-primaria);
+  background-color: var(--cor-primaria-suave);
+}
+
+.preview-anexo-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-principal);
+}
+
+.img-preview {
+  max-width: 100%;
+  max-height: 160px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.pdf-preview-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cor-primaria);
+}
+
+.btn-remover-anexo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-despesa);
+  color: var(--cor-despesa);
+  font-size: 0.775rem;
+  font-weight: 600;
+}
+
+.form-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+
+.btn-cancelar-form {
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-principal);
+  color: var(--texto-secundario);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.btn-cancelar-form:hover {
+  background-color: var(--cor-borda);
+}
+
+.btn-salvar-form {
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-md);
+  background-color: var(--cor-primaria);
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+.btn-salvar-form:hover {
+  background-color: var(--cor-primaria-hover);
+}

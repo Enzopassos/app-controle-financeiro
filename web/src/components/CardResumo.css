@@ -1,0 +1,117 @@
+.resumo-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-saldo-principal {
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--sombra-card);
+  border: 1px solid var(--cor-borda);
+  transition: var(--transicao-suave);
+}
+
+.saldo-positivo-bg {
+  background: linear-gradient(135deg, #ECFDF5 0%, #FFFFFF 100%);
+  border-color: #A7F3D0;
+}
+
+.saldo-negativo-bg {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+  border-color: #FCA5A5;
+}
+
+.card-saldo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-saldo-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.card-saldo-valor {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--texto-principal);
+  margin-top: 0.25rem;
+  letter-spacing: -0.03em;
+}
+
+.card-saldo-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.resumo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.card-metrica {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.1rem 1.25rem;
+  background-color: var(--bg-superficie);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--cor-borda);
+  box-shadow: var(--sombra-card);
+}
+
+.card-metrica-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+}
+
+.icone-receita {
+  background-color: var(--bg-receita);
+  color: var(--cor-receita);
+}
+
+.icone-despesa {
+  background-color: var(--bg-despesa);
+  color: var(--cor-despesa);
+}
+
+.icone-economias {
+  background-color: var(--bg-guardado);
+  color: var(--cor-guardado);
+}
+
+.card-metrica-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.card-metrica-valor {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0.1rem;
+}
+
+.valor-receita {
+  color: var(--cor-receita);
+}
+
+.valor-despesa {
+  color: var(--cor-despesa);
+}

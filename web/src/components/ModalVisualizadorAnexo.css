@@ -1,0 +1,109 @@
+.modal-anexo-box {
+  max-width: 600px;
+}
+
+.anexo-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.anexo-modal-titulo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--texto-principal);
+}
+
+.anexo-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.anexo-imagem-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--cor-borda);
+  background-color: var(--bg-principal);
+}
+
+.anexo-img-full {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
+.anexo-documento-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  width: 100%;
+  background-color: var(--bg-principal);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--cor-borda);
+  text-align: center;
+}
+
+.icone-pdf-doc {
+  color: var(--cor-primaria);
+  margin-bottom: 0.75rem;
+}
+
+.doc-titulo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--texto-principal);
+}
+
+.doc-subtitulo {
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+  margin-top: 0.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.doc-acoes-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-abrir-doc {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-md);
+  background-color: var(--cor-primaria);
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.btn-abrir-doc:hover {
+  background-color: var(--cor-primaria-hover);
+}
+
+.btn-download-doc {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-superficie);
+  border: 1px solid var(--cor-borda);
+  color: var(--texto-principal);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-download-doc:hover {
+  background-color: var(--cor-borda);
+}
