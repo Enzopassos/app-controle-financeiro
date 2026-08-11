@@ -40,6 +40,70 @@
   color: var(--texto-secundario);
 }
 
+.cabecalho-acoes-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cabecalho-usuario-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-principal);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--cor-borda);
+}
+
+.cabecalho-usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--texto-secundario);
+  font-size: 0.825rem;
+  font-weight: 500;
+  max-width: 180px;
+}
+
+.cabecalho-usuario-email {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cabecalho-btn-sair {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  background-color: var(--bg-despesa);
+  color: var(--cor-despesa);
+  font-size: 0.775rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+
+.cabecalho-btn-sair:hover {
+  background-color: #FEE2E2;
+}
+
+.cabecalho-btn-entrar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.9rem;
+  background-color: var(--cor-primaria-suave);
+  color: var(--cor-primaria);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+}
+
+.cabecalho-btn-entrar:hover {
+  background-color: #DBEAFE;
+}
+
 .cabecalho-btn-adicionar {
   display: inline-flex;
   align-items: center;

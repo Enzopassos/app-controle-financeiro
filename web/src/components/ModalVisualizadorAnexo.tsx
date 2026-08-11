@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { X, ExternalLink, Download, FileText } from 'lucide-react';
 import './ModalVisualizadorAnexo.css';
 
@@ -22,7 +23,7 @@ export const ModalVisualizadorAnexo: React.FC<ModalVisualizadorAnexoProps> = ({
     }
   };
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={aoFechar}>
       <div className="modal-conteudo modal-anexo-box" onClick={(e) => e.stopPropagation()}>
         <div className="anexo-modal-header">
@@ -57,6 +58,7 @@ export const ModalVisualizadorAnexo: React.FC<ModalVisualizadorAnexoProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

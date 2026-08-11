@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Paperclip, Edit3, Trash2, Inbox } from 'lucide-react';
 import type { Transacao } from '../types/transacao';
+import { ModalConfirmacaoExclusao } from './ModalConfirmacaoExclusao';
 import './ListaTransacoes.css';
 
 interface ListaTransacoesProps {
@@ -18,6 +19,8 @@ export const ListaTransacoes: React.FC<ListaTransacoesProps> = ({
   aoExcluirTransacao,
   aoVisualizarAnexo,
 }) => {
+  const [transacaoParaExcluir, setTransacaoParaExcluir] = useState<Transacao | null>(null);
+
   const obterTextoParcela = (tx: Transacao) => {
     if (tx.tipoRecorrencia !== 'installment') return '';
     
@@ -37,6 +40,13 @@ export const ListaTransacoes: React.FC<ListaTransacoesProps> = ({
     return `Parcela ${parcelaAtual}/${totalParcelas}`;
   };
 
+  const tratarConfirmarExclusao = () => {
+    if (transacaoParaExcluir) {
+      aoExcluirTransacao(transacaoParaExcluir.id);
+      setTransacaoParaExcluir(null);
+    }
+  };
+
   if (transacoes.length === 0) {
     return (
       <div className="lista-vazia-container">
@@ -52,92 +62,98 @@ export const ListaTransacoes: React.FC<ListaTransacoesProps> = ({
   }
 
   return (
-    <section className="lista-transacoes-container" aria-label="Lista de Transações">
-      {transacoes.map((tx) => {
-        const textoParcela = obterTextoParcela(tx);
-        const ehPositivo = tx.tipo === 'income' || tx.tipo === 'withdraw';
-        const sinal = ehPositivo ? '+' : '-';
+    <>
+      <section className="lista-transacoes-container" aria-label="Lista de Transações">
+        {transacoes.map((tx) => {
+          const textoParcela = obterTextoParcela(tx);
+          const ehPositivo = tx.tipo === 'income' || tx.tipo === 'withdraw';
+          const sinal = ehPositivo ? '+' : '-';
 
-        let classeValor = 'valor-despesa';
-        let rotuloTipo = 'Despesa';
+          let classeValor = 'valor-despesa';
+          let rotuloTipo = 'Despesa';
 
-        if (tx.tipo === 'income') {
-          classeValor = 'valor-receita';
-          rotuloTipo = 'Receita';
-        } else if (tx.tipo === 'saving') {
-          classeValor = 'valor-economias';
-          rotuloTipo = 'Guardado';
-        } else if (tx.tipo === 'withdraw') {
-          classeValor = 'valor-receita';
-          rotuloTipo = 'Resgatado';
-        }
+          if (tx.tipo === 'income') {
+            classeValor = 'valor-receita';
+            rotuloTipo = 'Receita';
+          } else if (tx.tipo === 'saving') {
+            classeValor = 'valor-economias';
+            rotuloTipo = 'Guardado';
+          } else if (tx.tipo === 'withdraw') {
+            classeValor = 'valor-receita';
+            rotuloTipo = 'Resgatado';
+          }
 
-        const rotuloRecorrencia =
-          tx.tipoRecorrencia === 'single'
-            ? 'Única'
-            : tx.tipoRecorrencia === 'fixed'
-            ? 'Fixa'
-            : textoParcela;
+          const rotuloRecorrencia =
+            tx.tipoRecorrencia === 'single'
+              ? 'Única'
+              : tx.tipoRecorrencia === 'fixed'
+              ? 'Fixa'
+              : textoParcela;
 
-        return (
-          <article key={tx.id} className="card-transacao">
-            <div className="transacao-info-principal">
-              <div className="transacao-detalhes-top">
-                <h3 className="transacao-nome">{tx.nome}</h3>
-                <span className={`badge-tipo badge-tipo-${tx.tipo}`}>{rotuloTipo}</span>
+          return (
+            <article key={tx.id} className="card-transacao">
+              <div className="transacao-info-principal">
+                <div className="transacao-detalhes-top">
+                  <h3 className="transacao-nome">{tx.nome}</h3>
+                  <span className={`badge-tipo badge-tipo-${tx.tipo}`}>{rotuloTipo}</span>
+                </div>
+
+                <div className="transacao-meta">
+                  <span>{tx.categoria}</span>
+                  <span className="meta-divisor">•</span>
+                  <span>{rotuloRecorrencia}</span>
+                  <span className="meta-divisor">•</span>
+                  <span>Início: {tx.data}</span>
+                </div>
+
+                {tx.uriAnexo && (
+                  <button
+                    className="badge-anexo-item"
+                    onClick={() => aoVisualizarAnexo(tx.uriAnexo!)}
+                  >
+                    <Paperclip size={14} />
+                    <span>Ver anexo</span>
+                  </button>
+                )}
               </div>
 
-              <div className="transacao-meta">
-                <span>{tx.categoria}</span>
-                <span className="meta-divisor">•</span>
-                <span>{rotuloRecorrencia}</span>
-                <span className="meta-divisor">•</span>
-                <span>Início: {tx.data}</span>
+              <div className="transacao-acoes-lado">
+                <span className={`transacao-valor ${classeValor}`}>
+                  {sinal} R$ {tx.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
+
+                <div className="botoes-acao-row">
+                  <button
+                    className="btn-acao btn-editar"
+                    onClick={() => aoEditarTransacao(tx)}
+                    title="Editar Transação"
+                  >
+                    <Edit3 size={16} />
+                    <span>Editar</span>
+                  </button>
+
+                  <button
+                    className="btn-acao btn-excluir"
+                    onClick={() => setTransacaoParaExcluir(tx)}
+                    title="Excluir Transação"
+                  >
+                    <Trash2 size={16} />
+                    <span>Excluir</span>
+                  </button>
+                </div>
               </div>
+            </article>
+          );
+        })}
+      </section>
 
-              {tx.uriAnexo && (
-                <button
-                  className="badge-anexo-item"
-                  onClick={() => aoVisualizarAnexo(tx.uriAnexo!)}
-                >
-                  <Paperclip size={14} />
-                  <span>Ver anexo</span>
-                </button>
-              )}
-            </div>
-
-            <div className="transacao-acoes-lado">
-              <span className={`transacao-valor ${classeValor}`}>
-                {sinal} R$ {tx.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </span>
-
-              <div className="botoes-acao-row">
-                <button
-                  className="btn-acao btn-editar"
-                  onClick={() => aoEditarTransacao(tx)}
-                  title="Editar Transação"
-                >
-                  <Edit3 size={16} />
-                  <span>Editar</span>
-                </button>
-
-                <button
-                  className="btn-acao btn-excluir"
-                  onClick={() => {
-                    if (window.confirm(`Excluir a transação "${tx.nome}"?`)) {
-                      aoExcluirTransacao(tx.id);
-                    }
-                  }}
-                  title="Excluir Transação"
-                >
-                  <Trash2 size={16} />
-                  <span>Excluir</span>
-                </button>
-              </div>
-            </div>
-          </article>
-        );
-      })}
-    </section>
+      {transacaoParaExcluir && (
+        <ModalConfirmacaoExclusao
+          transacao={transacaoParaExcluir}
+          aoConfirmar={tratarConfirmarExclusao}
+          aoCancelar={() => setTransacaoParaExcluir(null)}
+        />
+      )}
+    </>
   );
 };

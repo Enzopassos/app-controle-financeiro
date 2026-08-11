@@ -1,0 +1,107 @@
+.modal-confirmacao-box {
+  max-width: 440px;
+  padding: 2rem 1.75rem 1.5rem 1.75rem;
+  text-align: center;
+  position: relative;
+}
+
+.btn-fechar-modal-confirmacao {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  color: var(--texto-secundario);
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+}
+
+.btn-fechar-modal-confirmacao:hover {
+  background-color: var(--bg-principal);
+  color: var(--texto-principal);
+}
+
+.confirmacao-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.confirmacao-icone-alerta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  background-color: var(--bg-despesa);
+  color: var(--cor-despesa);
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+}
+
+.confirmacao-titulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--texto-principal);
+}
+
+.confirmacao-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.75rem;
+}
+
+.confirmacao-mensagem {
+  font-size: 0.95rem;
+  color: var(--texto-secundario);
+  line-height: 1.4;
+}
+
+.destaque-nome-transacao {
+  color: var(--texto-principal);
+  font-weight: 600;
+}
+
+.confirmacao-aviso {
+  font-size: 0.8rem;
+  color: var(--cor-despesa);
+  font-weight: 500;
+}
+
+.confirmacao-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-cancelar-confirmacao {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-principal);
+  color: var(--texto-secundario);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.btn-cancelar-confirmacao:hover {
+  background-color: var(--cor-borda);
+  color: var(--texto-principal);
+}
+
+.btn-excluir-confirmacao {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  background-color: var(--cor-despesa);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.875rem;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+}
+
+.btn-excluir-confirmacao:hover {
+  background-color: #B91C1C;
+  transform: translateY(-1px);
+}

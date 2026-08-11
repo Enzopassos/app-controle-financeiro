@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Paperclip, Trash2, ArrowDownCircle, ArrowUpCircle, PiggyBank, Scale } from 'lucide-react';
 import type { Transacao, TipoTransacao, TipoRecorrencia, CategoriaTransacao } from '../types/transacao';
 import './FormularioTransacao.css';
@@ -122,7 +123,7 @@ export const FormularioTransacao: React.FC<FormularioTransacaoProps> = ({
 
   const ehImagemAnexo = uriAnexo ? uriAnexo.startsWith('data:image/') || /\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i.test(uriAnexo) : false;
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={aoCancelar}>
       <div className="modal-conteudo modal-formulario" onClick={(e) => e.stopPropagation()}>
         <div className="form-header">
@@ -348,6 +349,7 @@ export const FormularioTransacao: React.FC<FormularioTransacaoProps> = ({
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
